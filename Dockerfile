@@ -11,6 +11,8 @@ RUN rm -f windsurf-stable.gpg
 
 RUN apt-get update && sudo apt install apt-transport-https &&apt-get install -y windsurf
 
+RUN apt-get install -y tigervnc-standalone-server
+
 COPY root/etc/s6-overlay/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 
 
