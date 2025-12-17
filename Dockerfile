@@ -16,10 +16,14 @@ RUN apt-get install -y tigervnc-standalone-server
 RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano
 
 RUN mv /usr/bin/brave-browser /usr/bin/og-brave-browser \
-    && mv /usr/bin/brave-browser-stable /usr/bin/og-brave-browser-stable 
+    && mv /usr/bin/brave-browser-stable /usr/bin/og-brave-browser-stable \
+    && mv /usr/bin/chromium /usr/bin/og-chromium \
+    && mv /usr/bin/windsurf /usr/bin/og-windsurf
 
 COPY root/ /
 
 RUN chmod +x /usr/bin/brave-browser-stable \
-    && chmod +x /usr/bin/brave-browser
+    && chmod +x /usr/bin/brave-browser \
+    && chmod +x /usr/bin/chromium \
+    && chmod +x /usr/bin/windsurf
 
