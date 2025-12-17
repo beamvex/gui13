@@ -15,9 +15,11 @@ RUN apt-get install -y tigervnc-standalone-server
 
 RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano
 
+RUN mv /usr/bin/brave-browser /usr/bin/og-brave-browser \
+    && mv /usr/bin/brave-browser-stable /usr/bin/og-brave-browser-stable 
+
 COPY root/ /
 
-USER abc
-ENV CHROMIUM_FLAGS="--no-sandbox --disable-dev-shm-usage"
-USER root
+RUN chmod +x /usr/bin/brave-browser-stable \
+    && chmod +x /usr/bin/brave-browser
 
