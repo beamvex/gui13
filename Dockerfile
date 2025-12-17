@@ -17,4 +17,7 @@ RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano
 
 COPY root/ /
 
+USER abc
+ENV CHROMIUM_FLAGS="--no-sandbox --disable-dev-shm-usage"
+USER root
 
