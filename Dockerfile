@@ -13,6 +13,8 @@ RUN apt-get update && sudo apt install apt-transport-https &&apt-get install -y 
 
 RUN apt-get install -y tigervnc-standalone-server
 
+RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano
+
 COPY root/etc/s6-overlay/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 
 
