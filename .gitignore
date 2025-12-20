@@ -1,2 +1,6 @@
 config
 ancestors
+log
+run
+.terraform
+.terraform.lock.hcl
