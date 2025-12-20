@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "gui13" {
-  name = "gui13"
+  name = "gui13eu"
 }
 
 resource "aws_ecr_repository_policy" "gui13_policy" {
