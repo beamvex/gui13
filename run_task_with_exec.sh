@@ -13,7 +13,6 @@ set -euo pipefail
 #   LAUNCH_TYPE        default: FARGATE
 #   ASSIGN_PUBLIC_IP   ENABLED|DISABLED (default: ENABLED)
 #   AWS_REGION         if not set, awscli default config is used
-#   ROLE               task execution role ARN (optional)
 
 : "${CLUSTER:?Set CLUSTER}"
 : "${TASK_DEFINITION:?Set TASK_DEFINITION}"
@@ -24,12 +23,8 @@ CONTAINER="${CONTAINER:-app}"
 COMMAND="${COMMAND:-/bin/bash}"
 LAUNCH_TYPE="${LAUNCH_TYPE:-FARGATE}"
 ASSIGN_PUBLIC_IP="${ASSIGN_PUBLIC_IP:-ENABLED}"
-ROLE="${ROLE:-}"
 
 OVERRIDES_ARGS=()
-if [[ -n "$ROLE" ]]; then
-  OVERRIDES_ARGS=(--overrides "{\"taskRoleArn\":\"${ROLE}\"}")
-fi
 
 AWS_REGION_ARGS=()
 if [[ -n "${AWS_REGION:-}" ]]; then
@@ -45,7 +40,6 @@ TASK_ARN="$(
     --cluster "$CLUSTER" \
     --task-definition "$TASK_DEFINITION" \
     --launch-type "$LAUNCH_TYPE" \
-    --enable-execute-command \
     "${OVERRIDES_ARGS[@]}" \
     --network-configuration "$NETWORK_CONFIGURATION" \
     --query 'tasks[0].taskArn' \
@@ -60,12 +54,3 @@ fi
 echo "Task ARN: $TASK_ARN"
 echo "Waiting until task is RUNNING..."
 aws ecs wait tasks-running "${AWS_REGION_ARGS[@]}" --cluster "$CLUSTER" --tasks "$TASK_ARN"
-
-echo "Starting ECS Exec session: container=${CONTAINER}, command=${COMMAND}"
-exec aws ecs execute-command \
-  "${AWS_REGION_ARGS[@]}" \
-  --cluster "$CLUSTER" \
-  --task "$TASK_ARN" \
-  --container "$CONTAINER" \
-  --interactive \
-  --command "$COMMAND"
