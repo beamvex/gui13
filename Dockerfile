@@ -13,12 +13,16 @@ RUN apt-get update && sudo apt install apt-transport-https &&apt-get install -y 
 
 RUN apt-get install -y tigervnc-standalone-server
 
-RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano
+RUN apt-get install -y net-tools inetutils-tools inetutils-ping nano unzip
 
 RUN mv /usr/bin/brave-browser /usr/bin/og-brave-browser \
     && mv /usr/bin/brave-browser-stable /usr/bin/og-brave-browser-stable \
     && mv /usr/bin/chromium /usr/bin/og-chromium \
     && mv /usr/bin/windsurf /usr/bin/og-windsurf
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install
 
 COPY root/ /
 

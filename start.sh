@@ -7,4 +7,4 @@ docker run -it --rm --name gui13 -p 3001:3001 \
   -v ./config:/config \
   -v /tmp:/tmp \
   --security-opt seccomp=unconfined \
-  gui13 /bin/bash
+  gui13 "/bin/bash"
