@@ -29,6 +29,9 @@ RUN curl -L --output timebomb.tar.gz https://github.com/beamvex/time-bomb/releas
     && mv time-bomb-1.0.0 /usr/lib/timebomb \
     && rm timebomb.tar.gz
 
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
+RUN apt-get install -y nodejs
+
 COPY root/ /
 
 RUN chmod +x /usr/bin/brave-browser-stable \

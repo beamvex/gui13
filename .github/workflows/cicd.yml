@@ -1,0 +1,46 @@
+name: Build and deploy Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for OIDC
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::512752756525:role/deploygui13
+          aws-region: eu-west-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Install dependencies
+        env:
+          TF_PLUGIN_CACHE_DIR: ./plugin-cache
+        run: |
+          mkdir -p "$TF_PLUGIN_CACHE_DIR"
+          terraform init -input=false -no-color
+
+      - name: Plan
+        env:
+          TF_PLUGIN_CACHE_DIR: ./plugin-cache
+        run: terraform plan -out=tfplan
+
+      - name: Apply
+        env:
+          TF_PLUGIN_CACHE_DIR: ./plugin-cache
+        run: terraform apply tfplan
