@@ -23,12 +23,18 @@ resource "aws_ecs_task_definition" "app" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "4096"
   memory                   = "16384"
-  
   execution_role_arn       = aws_iam_role.ecs_execution.arn
   container_definitions    = jsonencode([
     {
       name  = "app"
       image = local.docker_image_uri
+      entryPoint = ["/bin/bash", "-c", "sleep 5; DISPLAY=:1 TIMEBOMB_SECONDS=500 timebomb"]
+      environment = [
+        {
+          name  = "S6_KEEP_ENV"
+          value = "1"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
