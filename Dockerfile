@@ -26,7 +26,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 RUN curl -L --output timebomb.tar.gz https://github.com/beamvex/time-bomb/releases/download/v1.2/time-bomb-v1.2-linux-x86_64.tar.gz \
     && tar -xvf timebomb.tar.gz \
-    && mv time-bomb-1.2 /usr/lib/timebomb \
+    && mv time-bomb-1.0.0 /usr/lib/timebomb \
     && rm timebomb.tar.gz
 
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
