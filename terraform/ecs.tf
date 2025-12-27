@@ -28,11 +28,19 @@ resource "aws_ecs_task_definition" "app" {
     {
       name  = "app"
       image = local.docker_image_uri
-      entryPoint = ["/bin/bash", "-c", "sleep 5; DISPLAY=:1 TIMEBOMB_SECONDS=500 timebomb"]
+      command = ["/bin/bash", "-c", "sleep 5; timebomb"]
       environment = [
         {
           name  = "S6_KEEP_ENV"
           value = "1"
+        },
+        {
+          name  = "TIMEBOMB_SECONDS"
+          value = "500"
+        },
+        {
+          name  = "DISPLAY"
+          value = ":1"
         }
       ]
       logConfiguration = {
